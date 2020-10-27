@@ -42,9 +42,9 @@ func NewCounterEndpoints() []*api.Endpoint {
 // Client API for Counter service
 
 type CounterService interface {
-	// 定義 API Interface，Count 為此 API 的 Name，
+	// 定義 API Interface，Counter 為此 API 的 Name，
 	// 代表 給 Count API Request 當參數，並返回 Response
-	Count(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
+	Counter(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
 }
 
 type counterService struct {
@@ -59,8 +59,8 @@ func NewCounterService(name string, c client.Client) CounterService {
 	}
 }
 
-func (c *counterService) Count(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
-	req := c.c.NewRequest(c.name, "Counter.Count", in)
+func (c *counterService) Counter(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "Counter.Counter", in)
 	out := new(Response)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -72,14 +72,14 @@ func (c *counterService) Count(ctx context.Context, in *Request, opts ...client.
 // Server API for Counter service
 
 type CounterHandler interface {
-	// 定義 API Interface，Count 為此 API 的 Name，
+	// 定義 API Interface，Counter 為此 API 的 Name，
 	// 代表 給 Count API Request 當參數，並返回 Response
-	Count(context.Context, *Request, *Response) error
+	Counter(context.Context, *Request, *Response) error
 }
 
 func RegisterCounterHandler(s server.Server, hdlr CounterHandler, opts ...server.HandlerOption) error {
 	type counter interface {
-		Count(ctx context.Context, in *Request, out *Response) error
+		Counter(ctx context.Context, in *Request, out *Response) error
 	}
 	type Counter struct {
 		counter
@@ -92,6 +92,6 @@ type counterHandler struct {
 	CounterHandler
 }
 
-func (h *counterHandler) Count(ctx context.Context, in *Request, out *Response) error {
-	return h.CounterHandler.Count(ctx, in, out)
+func (h *counterHandler) Counter(ctx context.Context, in *Request, out *Response) error {
+	return h.CounterHandler.Counter(ctx, in, out)
 }
