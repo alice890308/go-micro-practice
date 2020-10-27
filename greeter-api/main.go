@@ -7,7 +7,7 @@ import (
   "greeter-api/client"
   "log"
 )
-
+// main
 func main() {
   // Remember to call the Init() function to initialize the go-micro client service
   client.Init()
